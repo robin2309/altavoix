@@ -49,7 +49,7 @@ const getStanding = (votes, id) => {
 }
 
 const normalizeName = name => {
-  return name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+  return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 }
 
 const writeDeputeData = ({identifiant: id, Prénom: firstName, Nom: lastName}, {scrutin}) => {
