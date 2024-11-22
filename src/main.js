@@ -22,7 +22,7 @@ try {
       writeDepute(row, scrutinData);
     })
     .on('end', () => {
-      console.log('CSV file successfully processed.');
+      // console.log('CSV file successfully processed.');
     })
     .on('error', (err) => {
       console.error('Error reading the file:', err.message);
@@ -30,4 +30,3 @@ try {
 } catch (err) {
   console.error('Error reading the file:', err.message);
 }
-
