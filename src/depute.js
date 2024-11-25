@@ -13,6 +13,7 @@ const __dirname = path.dirname(__filename);
     *  lastName
     *  votes [
     *      {
+    *           number
     *           title
     *           standing: POUR / CONTRE / ABSENT / ABSTENTION
     * }
@@ -52,39 +53,56 @@ const normalizeName = name => {
   return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 }
 
-const writeDeputeData = ({identifiant: id, Prénom: firstName, Nom: lastName}, {scrutin}) => {
-  const standing = getStanding(scrutin.ventilationVotes, id);
-  console.log(standing);
+const mountDeputeData = ({identifiant: id, Prénom: firstName, Nom: lastName}, scrutins) => {
+  const votes = scrutins.map(({scrutin}) => {
+    return {
+      number: scrutin.numero,
+      title: scrutin.titre,
+      standing: getStanding(scrutin.ventilationVotes, id),
+    };
+  });
+
   const output = {
     firstName,
     lastName,
-    votes: [
-      {
-        title: scrutin.titre,
-        standing,
-      }
-    ]
-  }
-  const fileName = `${normalizeName(firstName)}_${normalizeName(lastName)}.json`;
+    votes
+  };
 
+  return output;
+
+}
+
+const writeDeputeFiles = deputeData => new Promise((resolve, reject) => {
   // Define the output folder in the parent directory
   const outputDir = path.join(__dirname, '..', 'output');
 
-  // Ensure the output directory exists
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
-  }
-
-  const filePath = path.join(outputDir, fileName);
-
-  // Write the JSON object to the file
-  fs.writeFile(filePath, JSON.stringify(output, null, 2), (err) => {
-    if (err) {
-      console.error('Error writing to file:', err.message);
-    } else {
-      console.log(`File successfully written to ${filePath}`);
-    }
+  const writePromises = deputeData.map(depute => {
+    return new Promise((resolveWrite, rejectWrite) => {
+      const fileName = `${normalizeName(depute.firstName)}_${normalizeName(depute.lastName)}.json`;
+      const filePath = path.join(outputDir, fileName);
+      
+      // Write the JSON object to the file
+      fs.writeFile(filePath, JSON.stringify(depute, null, 2), (err) => {
+        if (err) {
+          console.error('Error writing to file:', err.message);
+          rejectWrite();
+        } else {
+          console.log(`File successfully written to ${filePath}`);
+          resolveWrite();
+        }
+      });
+    });
   });
-}
 
-export default writeDeputeData;
+  Promise.all(writePromises)
+    .then(() => {
+      resolve();
+    })
+    .catch(err => {
+      reject(err);
+      console.log('ERROR AT WRITE');
+    })
+  
+});
+
+export { mountDeputeData, writeDeputeFiles };
