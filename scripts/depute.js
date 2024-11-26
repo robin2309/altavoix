@@ -2,6 +2,8 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
 
+import { normalizeName } from '../shared/strings.js';
+
 // Replicate __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,10 +49,6 @@ const getStanding = (votes, id) => {
     if (isInVoters(abstentions, id)) return ABSTENTION;
   }
   return ABSENT;
-}
-
-const normalizeName = name => {
-  return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 }
 
 const mountDeputeData = ({identifiant: id, Prénom: firstName, Nom: lastName}, scrutins) => {

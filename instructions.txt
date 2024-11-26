@@ -1,0 +1,5 @@
+I created a basic NextJS application.
+I would like to create an endpoint at api/deputies/data that will take a firstname and lastname as query parameters.
+With these parameters, after normalizing the data, you will look into the ./output folder and find the json file corresponding to the normalized firstname and lastname.
+You will return the data contained in the json file to the user.
+
