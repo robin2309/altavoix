@@ -173,28 +173,3 @@ downloadAndWrite()
   .catch(() => {
     console.log('ERROR');
   });
-
-// try {
-//   const scrutinFile = fs.readFileSync('../resources/VTANR5L17V455.json', 'utf8');
-//   const scrutinData = JSON.parse(scrutinFile);
-//   // Open and process the CSV file
-//   fs.createReadStream(filePath)
-//     .pipe(csv()) // Automatically treats the first line as the header
-//     .on('data', (row) => {
-//       writeDepute(row, scrutinData);
-//     })
-//     .on('end', () => {
-//       // console.log('CSV file successfully processed.');
-//     })
-//     .on('error', (err) => {
-//       console.error('Error reading the file:', err.message);
-//     });
-// } catch (err) {
-//   console.error('Error reading the file:', err.message);
-// }
-
-// download all jsons from https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip
-// into data/
-// unzip
-// open files
-// store in array
