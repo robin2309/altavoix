@@ -2,6 +2,7 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
 
+import { POUR, CONTRE, ABSTENTION, ABSENT, parseVotes } from '../models/depute.js';
 import { normalizeName } from '../shared/strings.js';
 
 // Replicate __dirname
@@ -23,11 +24,6 @@ const __dirname = path.dirname(__filename);
  * }
  */
 // lookup vote in scrutin.ventilationVotes.organe.groupes.groupe[].vote.decompteNominatif.(pours / contres / abstentions).votant[].acteurRef
-
-const POUR = 'pour';
-const CONTRE = 'contre';
-const ABSTENTION = 'abstention';
-const ABSENT = 'absent';
 
 const isInVoters = (votes, id) => {
   if (!votes) return false;
