@@ -2,7 +2,8 @@
   "compilerOptions": {
     "paths": {
       "@/shared/*": ["./shared/*"],
-      "@/models/*": ["./models/*"]
+      "@/models/*": ["./models/*"],
+      "@/components/*": ["./components/*"]
     },
     "baseUrl": "."
   }

@@ -1,6 +1,9 @@
 'use client';
 
+import Head from 'next/head';
 import { useState, useEffect } from 'react';
+
+import Votes from '@/components/Votes';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,6 +48,11 @@ export default function Home() {
   };
 
   return (
+    <>
+      <Head>
+        <title>Altavoix</title>
+        <meta name="description" content="Suivez l'activité des députés de l'Assemblée Nationale" />
+      </Head>
     <main className="p-8">
       <div className="max-w-md mx-auto">
         <div className="relative">
@@ -54,16 +62,16 @@ export default function Home() {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher un député..."
             className="w-full p-2 border rounded-md"
-          />
+            />
           
           {suggestions.length > 0 && (
             <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
               {suggestions.map((deputy, index) => (
                 <div
-                  id="deputy-suggestion"
-                  key={index}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleDeputySelect(deputy)}
+                id="deputy-suggestion"
+                key={index}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => handleDeputySelect(deputy)}
                 >
                   {deputy.Prénom} {deputy.Nom}
                 </div>
@@ -74,16 +82,12 @@ export default function Home() {
 
         {deputyData && (
           <div className="mt-8 p-4 border rounded-md bg-white shadow-md">
-            <div className="mb-8">
               <h2 className="text-xl font-bold mb-8">{`${deputyData.firstName} ${deputyData.lastName}`}</h2>
-              <h3 className="text-lg font-bold mb-4">Votes aux scrutins de l'Assemblée Nationale</h3>
-            </div>
-            <pre className="whitespace-pre-wrap overflow-auto">
-              {JSON.stringify(deputyData, null, 2)}
-            </pre>
+              <Votes votes={deputyData.votes} />
           </div>
         )}
       </div>
     </main>
+    </>
   );
 }
