@@ -18,7 +18,7 @@ export default function Home() {
       }
 
       try {
-        const response = await fetch(`/api/deputies?query=${encodeURIComponent(searchQuery)}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/deputes?search=${encodeURIComponent(searchQuery)}`);
         const data = await response.json();
         setSuggestions(data);
       } catch (error) {
@@ -37,7 +37,7 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        `/api/deputies/data?firstname=${encodeURIComponent(deputy.Prénom)}&lastname=${encodeURIComponent(deputy.Nom)}`
+        `${process.env.NEXT_PUBLIC_API_HOST}/api/depute?firstname=${encodeURIComponent(deputy.Prénom)}&lastname=${encodeURIComponent(deputy.Nom)}`
       );
       const data = await response.json();
       setDeputyData(data);
