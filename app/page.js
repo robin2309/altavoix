@@ -4,36 +4,31 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 
 import Votes from '@/components/Votes';
+import { useSearchDeputes } from '@/hooks/useSearchDeputes';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  const debouncedSearchQuery = useDebouncedValue(searchQuery);
   const [deputyData, setDeputyData] = useState(null);
+  const { data: suggestions, resetData: resetSuggestions, execute: fetchSuggestions } = useSearchDeputes();
 
   useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (searchQuery.length < 2) {
-        setSuggestions([]);
-        return;
-      }
-
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/deputes?search=${encodeURIComponent(searchQuery)}`);
-        const data = await response.json();
-        setSuggestions(data);
-      } catch (error) {
-        console.error('Error fetching suggestions:', error);
-        setSuggestions([]);
-      }
-    };
-
-    const debounceTimer = setTimeout(fetchSuggestions, 300);
-    return () => clearTimeout(debounceTimer);
-  }, [searchQuery]);
+    if (debouncedSearchQuery.length < 2) {
+      return;
+    }
+    const debounceTimer = setTimeout(() => {
+      console.log('RUN FECTCH');
+      fetchSuggestions(debouncedSearchQuery)
+    }, 300);
+    return () => {
+      clearTimeout(debounceTimer);
+    }
+  }, [debouncedSearchQuery, fetchSuggestions]);
 
   const handleDeputySelect = async (deputy) => {
     setSearchQuery(`${deputy.Prénom} ${deputy.Nom}`);
-    setSuggestions([]); // Clear suggestions
+    resetSuggestions([]); // Clear suggestions
 
     try {
       const response = await fetch(
@@ -62,7 +57,7 @@ export default function Home() {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher un député..."
             className="w-full p-2 border rounded-md"
-            />
+          />
           
           {suggestions.length > 0 && (
             <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
