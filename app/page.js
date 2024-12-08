@@ -6,12 +6,13 @@ import { useState, useEffect } from 'react';
 import Votes from '@/components/Votes';
 import { useSearchDeputes } from '@/hooks/useSearchDeputes';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
+import { useDeputeData } from '@/hooks/useDeputeData';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
-  const [deputyData, setDeputyData] = useState(null);
   const { data: suggestions, resetData: resetSuggestions, execute: fetchSuggestions } = useSearchDeputes();
+  const { data: deputeData, getDeputeData } = useDeputeData();
 
   useEffect(() => {
     if (debouncedSearchQuery.length < 2) {
@@ -29,17 +30,7 @@ export default function Home() {
   const handleDeputySelect = async (deputy) => {
     setSearchQuery(`${deputy.Prénom} ${deputy.Nom}`);
     resetSuggestions([]); // Clear suggestions
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/api/depute?firstname=${encodeURIComponent(deputy.Prénom)}&lastname=${encodeURIComponent(deputy.Nom)}`
-      );
-      const data = await response.json();
-      setDeputyData(data);
-    } catch (error) {
-      console.error('Error fetching deputy data:', error);
-      setDeputyData(null);
-    }
+    getDeputeData(deputy.Prénom, deputy.Nom);
   };
 
   return (
@@ -63,10 +54,10 @@ export default function Home() {
             <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
               {suggestions.map((deputy, index) => (
                 <div
-                id="deputy-suggestion"
-                key={index}
-                className="p-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleDeputySelect(deputy)}
+                  id="deputy-suggestion"
+                  key={index}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleDeputySelect(deputy)}
                 >
                   {deputy.Prénom} {deputy.Nom}
                 </div>
@@ -75,10 +66,10 @@ export default function Home() {
           )}
         </div>
 
-        {deputyData && (
+        {deputeData && (
           <div className="mt-8 p-4 border rounded-md bg-white shadow-md">
-              <h2 className="text-xl font-bold mb-8">{`${deputyData.firstName} ${deputyData.lastName}`}</h2>
-              <Votes votes={deputyData.votes} />
+              <h2 className="text-xl font-bold mb-8">{`${deputeData.firstName} ${deputeData.lastName}`}</h2>
+              <Votes votes={deputeData.votes} />
           </div>
         )}
       </div>
