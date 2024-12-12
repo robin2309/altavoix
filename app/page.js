@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 
 import Votes from '@/components/Votes';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { useSearchDeputes } from '@/hooks/useSearchDeputes';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useDeputeData } from '@/hooks/useDeputeData';
@@ -65,13 +66,14 @@ export default function Home() {
             </div>
           )}
         </div>
-
-        {deputeData && (
-          <div className="mt-8 p-4 border rounded-md bg-white shadow-md">
-              <h2 className="text-xl font-bold mb-8">{`${deputeData.firstName} ${deputeData.lastName}`}</h2>
-              <Votes votes={deputeData.votes} />
-          </div>
-        )}
+        <ErrorBoundary>
+          {deputeData && (
+            <div className="mt-8 p-4 border rounded-md bg-white shadow-md">
+                <h2 className="text-xl font-bold mb-8">{`${deputeData.firstName} ${deputeData.lastName}`}</h2>
+                <Votes votes={deputeData.votes} />
+            </div>
+          )}
+        </ErrorBoundary>
       </div>
     </main>
     </>

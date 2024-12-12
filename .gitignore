@@ -134,3 +134,5 @@ output/
 data/
 
 extracted/
+
+.DS_Store
