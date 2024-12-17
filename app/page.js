@@ -1,6 +1,5 @@
 'use client';
 
-import Head from 'next/head';
 import { useState, useEffect } from 'react';
 
 import Votes from '@/components/Votes';
@@ -35,11 +34,6 @@ export default function Home() {
   };
 
   return (
-    <>
-      <Head>
-        <title>Altavoix</title>
-        <meta name="description" content="Suivez l'activité des députés de l'Assemblée Nationale" />
-      </Head>
     <main className="p-8">
       <div className="max-w-md mx-auto">
         <div className="relative">
@@ -76,6 +70,5 @@ export default function Home() {
         </ErrorBoundary>
       </div>
     </main>
-    </>
   );
 }
