@@ -1,0 +1,15 @@
+.homepage {
+  background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-white) 43%);
+}
+
+.homepage__input {
+  border: 2px solid var(--color-black);
+}
+
+.homepage__hero {
+  border: 2px solid var(--color-black);
+}
+
+.homepage__hero__img {
+  border: 2px solid var(--color-black);
+}

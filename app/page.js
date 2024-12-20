@@ -8,6 +8,8 @@ import { useSearchDeputes } from '@/hooks/useSearchDeputes';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useDeputeData } from '@/hooks/useDeputeData';
 
+import styles from './styles/Homepage.module.css';
+
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
@@ -19,7 +21,6 @@ export default function Home() {
       return;
     }
     const debounceTimer = setTimeout(() => {
-      console.log('RUN FECTCH');
       fetchSuggestions(debouncedSearchQuery)
     }, 300);
     return () => {
@@ -34,7 +35,7 @@ export default function Home() {
   };
 
   return (
-    <main className="p-8">
+    <main className={`px-8 pt-16 ${styles.homepage}`}>
       <div className="max-w-md mx-auto">
         <div className="relative">
           <input
@@ -42,7 +43,7 @@ export default function Home() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher un député..."
-            className="w-full p-2 border rounded-md"
+            className={`w-full px-2 py-4 mb-16 rounded-md ${styles.homepage__input}`}
           />
           
           {suggestions.length > 0 && (
@@ -59,6 +60,12 @@ export default function Home() {
               ))}
             </div>
           )}
+        </div>
+        <div className={styles.homepage__hero}>
+          <h1>
+            Suivez l’activité des députés à l’assemblée nationale 🏛️
+          </h1>
+          <img className={styles.homepage__hero__img} src="/images/heroImg.svg" alt="Hero" />
         </div>
         <ErrorBoundary>
           {deputeData && (

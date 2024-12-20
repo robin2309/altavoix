@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import styles from './Header.module.css';
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className={`sticky top-0 z-50 bg-white ${styles.wrapper}`}>
       <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="w-48">
