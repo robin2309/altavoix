@@ -37,19 +37,20 @@ export default function Home() {
   return (
     <main className={`px-8 pt-16 ${styles.homepage}`}>
       <div className="max-w-md mx-auto">
-        <div className="relative">
+        <div className="mb-16 relative">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher un député..."
-            className={`w-full px-2 py-4 mb-16 rounded-md ${styles.homepage__input}`}
+            className={`w-full px-2 py-4 rounded-md ${styles.homepage__input}`}
           />
           
           {suggestions.length > 0 && (
             <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
-              {suggestions.map((deputy, index) => (
-                <div
+              {suggestions.map((deputy, index) => {
+                const suggestionElement = (
+                  <div
                   id="deputy-suggestion"
                   key={index}
                   className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -57,16 +58,21 @@ export default function Home() {
                 >
                   {deputy.Prénom} {deputy.Nom}
                 </div>
-              ))}
+                );
+                return index < suggestions.length - 1 ? (
+                  <>
+                    {suggestionElement}
+                    <div className={`mx-2 ${styles.homepage__suggestionsDivider}`} />
+                  </>
+                ) : suggestionElement;
+              })}
             </div>
           )}
         </div>
-        <div className={styles.homepage__hero}>
-          <h1>
+          <h1 className={`mb-12 ${styles.homepage__text}`}>
             Suivez l’activité des députés à l’assemblée nationale 🏛️
           </h1>
-          <img className={styles.homepage__hero__img} src="/images/heroImg.svg" alt="Hero" />
-        </div>
+          <img className={styles.homepage__img} src="/images/heroImg.svg" alt="Hero" />
         <ErrorBoundary>
           {deputeData && (
             <div className="mt-8 p-4 border rounded-md bg-white shadow-md">

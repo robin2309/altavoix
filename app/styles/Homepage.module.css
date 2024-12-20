@@ -6,10 +6,17 @@
   border: 2px solid var(--color-black);
 }
 
-.homepage__hero {
-  border: 2px solid var(--color-black);
+.homepage__text {
+  font-family: var(--font-heading);
+  font-size: 40px;
+  color: var(--color-primary-dark);
 }
 
-.homepage__hero__img {
-  border: 2px solid var(--color-black);
+.homepage__img {
+  position: relative;
+}
+
+.homepage__suggestionsDivider {
+  background-color: var(--color-grey-light);
+  height: 1px;
 }
