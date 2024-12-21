@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 
-import Votes from '@/components/Votes';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { useSearchDeputes } from '@/hooks/useSearchDeputes';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
@@ -35,53 +34,50 @@ export default function Home() {
   };
 
   return (
-    <main className={`px-8 pt-16 ${styles.homepage}`}>
-      <div className="max-w-md mx-auto">
-        <div className="mb-16 relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Rechercher un député..."
-            className={`w-full px-2 py-4 rounded-md ${styles.homepage__input}`}
-          />
-          
-          {suggestions.length > 0 && (
-            <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
-              {suggestions.map((deputy, index) => {
-                const suggestionElement = (
-                  <div
-                  id="deputy-suggestion"
-                  key={index}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleDeputySelect(deputy)}
-                >
-                  {deputy.Prénom} {deputy.Nom}
-                </div>
-                );
-                return index < suggestions.length - 1 ? (
-                  <>
-                    {suggestionElement}
-                    <div className={`mx-2 ${styles.homepage__suggestionsDivider}`} />
-                  </>
-                ) : suggestionElement;
-              })}
-            </div>
-          )}
+    <ErrorBoundary>
+      <main className={`px-8 pt-16 ${styles.homepage}`}>
+        <div className="max-w-md mx-auto">
+          <div className="mb-16 relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Rechercher un député..."
+              className={`w-full px-2 py-4 rounded-md ${styles.homepage__input}`}
+            />
+            
+            {suggestions.length > 0 && (
+              <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
+                {suggestions.map((deputy, index) => {
+                  return index < suggestions.length - 1 ? (
+                    <div key={index}>
+                      <div
+                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handleDeputySelect(deputy)}
+                      >
+                        {deputy.Prénom} {deputy.Nom}
+                      </div>
+                      <div className={`mx-2 ${styles.homepage__suggestionsDivider}`} />
+                    </div>
+                  ) : (
+                    <div
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleDeputySelect(deputy)}
+                      key={index}
+                    >
+                      {deputy.Prénom} {deputy.Nom}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+            <h1 className={`mb-12 ${styles.homepage__text}`}>
+              Suivez l’activité des députés à l’assemblée nationale 🏛️
+            </h1>
+            <img className={styles.homepage__img} src="/images/heroImg.svg" alt="Hero" />
         </div>
-          <h1 className={`mb-12 ${styles.homepage__text}`}>
-            Suivez l’activité des députés à l’assemblée nationale 🏛️
-          </h1>
-          <img className={styles.homepage__img} src="/images/heroImg.svg" alt="Hero" />
-        <ErrorBoundary>
-          {deputeData && (
-            <div className="mt-8 p-4 border rounded-md bg-white shadow-md">
-                <h2 className="text-xl font-bold mb-8">{`${deputeData.firstName} ${deputeData.lastName}`}</h2>
-                <Votes votes={deputeData.votes} />
-            </div>
-          )}
-        </ErrorBoundary>
-      </div>
-    </main>
+      </main>
+    </ErrorBoundary>
   );
 }

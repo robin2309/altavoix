@@ -53,11 +53,11 @@ const reducer = (state, action) => {
 const useDeputeData = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const getDeputeData = async (firstname, lastname) => {
+  const getDeputeData = async (name) => {
     try {
       dispatch(getDeputePendingAction());
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/api/depute?firstname=${encodeURIComponent(firstname)}&lastname=${encodeURIComponent(lastname)}`
+        `${process.env.NEXT_PUBLIC_API_HOST}/api/depute?name=${encodeURIComponent(name)}`
       );
       const data = await response.json();
       dispatch(getDeputeFulfilledAction(data));
