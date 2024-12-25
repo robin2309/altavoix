@@ -1,19 +1,20 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import slugify from 'slugify';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { useSearchDeputes } from '@/hooks/useSearchDeputes';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
-import { useDeputeData } from '@/hooks/useDeputeData';
 
 import styles from './styles/Homepage.module.css';
 
 export default function Home() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebouncedValue(searchQuery);
   const { data: suggestions, resetData: resetSuggestions, execute: fetchSuggestions } = useSearchDeputes();
-  const { data: deputeData, getDeputeData } = useDeputeData();
 
   useEffect(() => {
     if (debouncedSearchQuery.length < 2) {
@@ -27,10 +28,12 @@ export default function Home() {
     }
   }, [debouncedSearchQuery, fetchSuggestions]);
 
-  const handleDeputySelect = async (deputy) => {
-    setSearchQuery(`${deputy.Prénom} ${deputy.Nom}`);
+  const handleDeputySelect = async (depute) => {
+    const name = `${depute.Prénom} ${depute.Nom}`;
+    const slugifiedName = slugify(name, {lower: true});
+    setSearchQuery(name);
     resetSuggestions([]); // Clear suggestions
-    getDeputeData(deputy.Prénom, deputy.Nom);
+    router.push(`/depute/${slugifiedName}`);
   };
 
   return (
