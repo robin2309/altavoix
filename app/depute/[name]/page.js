@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useDeputeData } from '@/hooks/useDeputeData';
 import ErrorBoundary from '@/components/ErrorBoundary';

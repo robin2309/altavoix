@@ -1,7 +1,3 @@
-import Head from 'next/head';
-
-import Header from '@/components/Header/Header';
-
 import './styles/globals.css'
 
 export const metadata = {
@@ -19,9 +15,8 @@ export default function RootLayout({ children }) {
           <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
         </head>
         <body>
-          <Header />
           {children}
         </body>
       </html>
-  )
+  );
 }

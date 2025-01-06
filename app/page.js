@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import slugify from 'slugify';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -38,48 +39,50 @@ export default function Home() {
 
   return (
     <ErrorBoundary>
-      <main className={`px-8 pt-16 ${styles.homepage}`}>
-        <div className="max-w-md mx-auto">
-          <div className="mb-16 relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Rechercher un député..."
-              className={`w-full px-2 py-4 rounded-md ${styles.homepage__input}`}
-            />
-            
-            {suggestions.length > 0 && (
-              <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
-                {suggestions.map((deputy, index) => {
-                  return index < suggestions.length - 1 ? (
-                    <div key={index}>
-                      <div
-                        className="p-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => handleDeputySelect(deputy)}
-                      >
-                        {deputy.Prénom} {deputy.Nom}
-                      </div>
-                      <div className={`mx-2 ${styles.homepage__suggestionsDivider}`} />
-                    </div>
-                  ) : (
-                    <div
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => handleDeputySelect(deputy)}
-                      key={index}
-                    >
-                      {deputy.Prénom} {deputy.Nom}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-            <h1 className={`mb-12 ${styles.homepage__text}`}>
-              Suivez l’activité des députés à l’assemblée nationale 🏛️
-            </h1>
-            <img className={styles.homepage__img} src="/images/heroImg.svg" alt="Hero" />
+      <main className={`px-6 ${styles.homepage}`}>
+        <img
+          src="https://i.postimg.cc/zGzhc6H6/Logo-Light-Primary-Web.webp"
+          alt="Altavoix Logo"
+          className={`pb-12 ${styles.homepage__img}`}
+        />
+        <div className="relative mb-6">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Rechercher un député..."
+            className={`w-full pr-2 py-4 pl-10 ${styles.homepage__input}`}
+          />
+          <span className={styles.homepage__inputIcon}>🔍</span>
         </div>
+        {suggestions.length > 0 && (
+          <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
+            {suggestions.map((deputy, index) => {
+              return index < suggestions.length - 1 ? (
+                <div key={index}>
+                  <div
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleDeputySelect(deputy)}
+                  >
+                    {deputy.Prénom} {deputy.Nom}
+                  </div>
+                  <div className={`mx-2 ${styles.homepage__suggestionsDivider}`} />
+                </div>
+              ) : (
+                <div
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleDeputySelect(deputy)}
+                  key={index}
+                >
+                  {deputy.Prénom} {deputy.Nom}
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <h1 className={`mb-12 ${styles.homepage__text}`}>
+          Suivez l'activité des députés à l'assemblée nationale 🏛️
+        </h1>
       </main>
     </ErrorBoundary>
   );
